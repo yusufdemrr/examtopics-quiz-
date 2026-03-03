@@ -1,0 +1,12 @@
+[
+  { "file": "aws_mla.md",     "provider": "amazon", "search": "mla-c01"             },
+  { "file": "aws_mls.md",     "provider": "amazon", "search": "mls-c01"             },
+  { "file": "aws_saa_c02.md", "provider": "amazon", "search": "saa-c02"             },
+  { "file": "aws_saa_c03.md", "provider": "amazon", "search": "saa-c03"             },
+  { "file": "aws_sap_c02.md", "provider": "amazon", "search": "sap-c02"             },
+  { "file": "aws_scs_c02.md", "provider": "amazon", "search": "scs-c02"             },
+  { "file": "aws_scs_c03.md", "provider": "amazon", "search": "scs-c03"             },
+  { "file": "aws_scs_all.md", "provider": "amazon", "search": "security-specialty"  },
+  { "file": "aws_dea_c01.md", "provider": "amazon", "search": "dea-c01"             },
+  { "file": "aws_dop_c01.md", "provider": "amazon", "search": "dop-c01"             }
+]

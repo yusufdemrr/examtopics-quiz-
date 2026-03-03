@@ -1,5 +1,15 @@
 [
   {
+    "file": "aws_dea_c01.md",
+    "title": "AWS Certified Data Engineer - Associate",
+    "code": "DEA-C01",
+    "questions": 257,
+    "category": "cloud",
+    "icon": "☁️",
+    "color": "#ff9900",
+    "label": "Cloud"
+  },
+  {
     "file": "aws_mls.md",
     "title": "AWS Certified Machine Learning - Specialty",
     "code": "",
