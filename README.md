@@ -4,6 +4,8 @@ This repo helps you download all types of exams from https://www.examtopics.com 
 
 It also includes a **built-in quiz site** (`frontend/`) that turns any downloaded `.md` file into an interactive practice exam — with answer reveal, score tracking, and multi-exam support. Deploy it to Netlify in one click.
 
+🌐 **Live demo:** [examtopics-quiz.netlify.app](https://examtopics-quiz.netlify.app)
+
 > Originally forked from [thatonecodes/examtopics-downloader](https://github.com/thatonecodes/examtopics-downloader)
 
 ## Quiz Site
