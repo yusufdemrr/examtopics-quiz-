@@ -1,6 +1,26 @@
 # Exam Topics Downloader
 
-This repo aims to make it possible for you to obtain all the exam questions from the examtopics website (which is paywalled).
+This repo helps you download all types of exams from https://www.examtopics.com for free.
+
+It also includes a **built-in quiz site** (`frontend/`) that turns any downloaded `.md` file into an interactive practice exam — with answer reveal, score tracking, and multi-exam support. Deploy it to Netlify in one click.
+
+> Originally forked from [thatonecodes/examtopics-downloader](https://github.com/thatonecodes/examtopics-downloader)
+
+## Quiz Site
+
+After downloading an exam, run:
+
+```bash
+node generate-manifest.js
+```
+
+This copies your `.md` files into `frontend/` and updates the exam list. Then deploy the `frontend/` folder to [Netlify](https://netlify.com) (drag & drop).
+
+**Netlify auto-deploy settings:**
+| Field | Value |
+|---|---|
+| Build command | `node generate-manifest.js` |
+| Publish directory | `frontend` |
 
 ## Setting it Up
 

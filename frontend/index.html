@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS Practice Exams</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:         #0d1117;
+      --surface:    #161b22;
+      --surface2:   #21262d;
+      --border:     #30363d;
+      --orange:     #ff9900;
+      --orange-dim: #cc7a00;
+      --text:       #e6edf3;
+      --muted:      #8b949e;
+      --green:      #3fb950;
+      --green-bg:   rgba(63,185,80,.15);
+      --red:        #f85149;
+      --red-bg:     rgba(248,81,73,.15);
+      --blue:       #58a6ff;
+      --radius:     12px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ═══════════════════════════════════
+       SHARED
+    ═══════════════════════════════════ */
+    .state-center {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 16px; min-height: 60vh;
+      color: var(--muted); font-size: .95rem;
+    }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--orange);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ═══════════════════════════════════
+       HOME PAGE
+    ═══════════════════════════════════ */
+    #home-view {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 48px 20px 64px;
+    }
+
+    .home-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .home-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--orange);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .home-logo-dot {
+      width: 8px; height: 8px;
+      background: var(--orange);
+      border-radius: 50%;
+    }
+    .home-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 12px;
+      line-height: 1.2;
+    }
+    .home-subtitle {
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .exam-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .exam-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      cursor: pointer;
+      transition: border-color .2s, transform .15s, box-shadow .2s;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+    }
+    .exam-card::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: var(--card-color, var(--orange));
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .exam-card:hover {
+      border-color: var(--card-color, var(--orange));
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    }
+    .exam-card:hover::before { opacity: 1; }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .card-icon {
+      width: 44px; height: 44px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      background: color-mix(in srgb, var(--card-color, var(--orange)) 15%, transparent);
+    }
+    .card-badge {
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--card-color, var(--orange)) 15%, transparent);
+      color: var(--card-color, var(--orange));
+      border: 1px solid color-mix(in srgb, var(--card-color, var(--orange)) 35%, transparent);
+    }
+
+    .card-body { flex: 1; }
+    .card-label {
+      font-size: .72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text);
+      line-height: 1.4;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+    .card-count {
+      font-size: .82rem;
+      color: var(--muted);
+    }
+    .card-count strong { color: var(--text); font-weight: 600; }
+    .card-arrow {
+      font-size: .85rem;
+      font-weight: 600;
+      color: var(--card-color, var(--orange));
+      transition: transform .15s;
+    }
+    .exam-card:hover .card-arrow { transform: translateX(4px); }
+
+    /* ═══════════════════════════════════
+       QUIZ PAGE
+    ═══════════════════════════════════ */
+    #quiz-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 48px;
+    }
+
+    .quiz-topbar {
+      width: 100%;
+      max-width: 780px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: .82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+      white-space: nowrap;
+    }
+    .btn-back:hover { color: var(--text); border-color: var(--text); }
+
+    .quiz-title {
+      font-weight: 700;
+      font-size: .95rem;
+      color: var(--text);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .quiz-counter {
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--muted);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+    .quiz-counter span { color: var(--text); }
+
+    .progress-wrap {
+      width: 100%; max-width: 780px;
+      margin-bottom: 20px;
+    }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: .72rem; color: var(--muted); margin-bottom: 6px;
+    }
+    .progress-bar {
+      width: 100%; height: 5px;
+      background: var(--surface2); border-radius: 999px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--quiz-color, var(--orange)), color-mix(in srgb, var(--quiz-color, var(--orange)) 60%, white));
+      border-radius: 999px;
+      transition: width .4s ease;
+    }
+
+    .score-bar {
+      width: 100%; max-width: 780px;
+      display: flex; gap: 10px; align-items: center;
+      font-size: .8rem; color: var(--muted);
+      margin-bottom: 16px; flex-wrap: wrap;
+    }
+    .score-item { display: flex; align-items: center; gap: 5px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green { background: var(--green); }
+    .dot-red   { background: var(--red); }
+    .jump-wrap { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    .jump-input {
+      width: 70px; padding: 7px 10px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text);
+      font-family: inherit; font-size: .82rem; text-align: center;
+    }
+    .jump-input:focus { outline: none; border-color: var(--quiz-color, var(--orange)); }
+    .btn-jump {
+      padding: 7px 13px; background: var(--surface2);
+      border: 1px solid var(--border); color: var(--text);
+      border-radius: 8px; font-family: inherit; font-size: .82rem; cursor: pointer;
+    }
+    .btn-jump:hover { border-color: var(--quiz-color, var(--orange)); color: var(--quiz-color, var(--orange)); }
+
+    /* Card */
+    .card {
+      width: 100%; max-width: 780px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px; margin-bottom: 20px;
+    }
+    .question-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: .72rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .06em;
+      color: var(--quiz-color, var(--orange));
+      background: color-mix(in srgb, var(--quiz-color, var(--orange)) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--quiz-color, var(--orange)) 30%, transparent);
+      padding: 4px 12px; border-radius: 999px; margin-bottom: 18px;
+    }
+    .question-text {
+      font-size: 1rem; line-height: 1.75;
+      color: var(--text); margin-bottom: 28px; white-space: pre-wrap;
+    }
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 14px 16px;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; cursor: pointer;
+      transition: border-color .2s, background .2s, transform .1s;
+      text-align: left; width: 100%; color: var(--text);
+      font-family: inherit; font-size: .93rem; line-height: 1.55;
+    }
+    .option:hover:not(:disabled) {
+      border-color: var(--quiz-color, var(--orange));
+      background: color-mix(in srgb, var(--quiz-color, var(--orange)) 7%, transparent);
+      transform: translateX(3px);
+    }
+    .option-letter {
+      flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%;
+      background: var(--border); display: flex; align-items: center;
+      justify-content: center; font-weight: 700; font-size: .85rem;
+      color: var(--muted); transition: background .2s, color .2s; margin-top: 1px;
+    }
+    .option.correct { background: var(--green-bg); border-color: var(--green); }
+    .option.correct .option-letter { background: var(--green); color: #0d1117; }
+    .option.wrong   { background: var(--red-bg);   border-color: var(--red);   }
+    .option.wrong   .option-letter { background: var(--red);   color: #fff;    }
+    .option:disabled { cursor: default; transform: none; }
+
+    .answer-reveal {
+      margin-top: 20px; padding: 14px 18px;
+      background: color-mix(in srgb, var(--quiz-color, var(--orange)) 8%, transparent);
+      border: 1px solid color-mix(in srgb, var(--quiz-color, var(--orange)) 35%, transparent);
+      border-radius: 10px; font-size: .9rem;
+      display: none; align-items: center; gap: 10px;
+    }
+    .answer-reveal.show { display: flex; }
+    .answer-reveal strong { color: var(--quiz-color, var(--orange)); }
+
+    /* Buttons */
+    .actions {
+      width: 100%; max-width: 780px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 8px; border: none;
+      font-family: inherit; font-size: .9rem; font-weight: 600;
+      cursor: pointer; transition: opacity .2s, transform .1s;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+    .btn-reveal {
+      background: var(--quiz-color, var(--orange));
+      color: #0d1117; flex: 1;
+    }
+    .btn-reveal:hover:not(:disabled) {
+      filter: brightness(.88);
+    }
+    .btn-nav {
+      background: var(--surface2); color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-nav:hover:not(:disabled) {
+      border-color: var(--quiz-color, var(--orange));
+      color: var(--quiz-color, var(--orange));
+    }
+    .btn-link {
+      background: transparent; color: var(--blue);
+      border: 1px solid var(--border); text-decoration: none;
+      font-family: inherit; font-size: .9rem; font-weight: 600;
+      padding: 11px 18px; border-radius: 8px;
+      display: inline-flex; align-items: center; gap: 6px;
+      transition: border-color .2s, color .2s;
+    }
+    .btn-link:hover { border-color: var(--blue); }
+
+    @media (max-width: 600px) {
+      .home-title   { font-size: 1.6rem; }
+      .card         { padding: 22px 18px; }
+      .quiz-title   { display: none; }
+      .jump-wrap    { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Views are rendered here by JS -->
+<div id="app"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  PARSER  (same robust logic as before)
+// ═══════════════════════════════════════════════════════
+function parseMarkdown(text) {
+  const questions = [];
+  const blocks = text.split(/\n-{38,}\n/);
+
+  for (const block of blocks) {
+    const qNumMatch = block.match(/Question #:\s*(\d+)/);
+    if (!qNumMatch) continue;
+
+    const boldMatch = block.match(/\*\*Answer:\s*([A-Z]+)\*\*/);
+    const sugMatch  = block.match(/Suggested Answer:\s*([A-Z]+)/);
+    const answer    = (boldMatch ? boldMatch[1] : (sugMatch ? sugMatch[1] : '')).trim();
+
+    const linkMatch = block.match(/\[View on ExamTopics\]\((https?:\/\/[^)]+)\)/);
+    const link = linkMatch ? linkMatch[1] : '';
+
+    const afterMarker = block.split(/\[All[^\]]+Questions\]/)[1];
+    if (!afterMarker) continue;
+
+    let body = afterMarker
+      .replace(/Suggested Answer:.*?(\n|$)/g, '')
+      .replace(/\*\*Answer:.*?\*\*/g, '')
+      .replace(/\*\*Timestamp:.*?\*\*/g, '')
+      .replace(/\[View on ExamTopics\].*?(\n|$)/g, '')
+      .trim();
+
+    const optStartMatch = /(?:^|\n)([A-E])\.(?:✑\s*|\s+)/.exec(body);
+    if (!optStartMatch) continue;
+
+    const questionText = body.substring(0, optStartMatch.index).trim().replace(/\n+/g, ' ');
+    const optionsRaw   = body.substring(optStartMatch.index);
+
+    const optRe = /([A-E])\.(?:✑\s*|\s+)([\s\S]*?)(?=(?:^|\n)[A-E]\.(?:✑|\s)|$)/gm;
+    const options = [];
+    let m;
+    while ((m = optRe.exec(optionsRaw)) !== null) {
+      const t = m[2].trim().replace(/\n+/g, ' ').replace(/\s{2,}/g, ' ');
+      if (t) options.push({ letter: m[1], text: t });
+    }
+    if (!options.length) continue;
+
+    questions.push({
+      number:   parseInt(qNumMatch[1]),
+      question: questionText,
+      options,
+      answer,
+      link,
+    });
+  }
+
+  questions.sort((a, b) => a.number - b.number);
+  return questions;
+}
+
+// ═══════════════════════════════════════════════════════
+//  APP STATE
+// ═══════════════════════════════════════════════════════
+let homeExams   = null;   // cached from exams.json
+let quizState   = null;   // { exam, questions, current, revealed, results }
+
+// ═══════════════════════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════════════════════
+function esc(str) {
+  return String(str)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function isCorrect(letter, answer) { return answer.includes(letter); }
+
+function setRoot(html) { document.getElementById('app').innerHTML = html; }
+
+// ═══════════════════════════════════════════════════════
+//  ROUTER  (hash-based)
+// ═══════════════════════════════════════════════════════
+window.addEventListener('hashchange', route);
+
+async function route() {
+  const hash = location.hash; // e.g. "" | "#quiz=aws_mls.md"
+  if (hash.startsWith('#quiz=')) {
+    await enterQuiz(decodeURIComponent(hash.slice(6)));
+  } else {
+    await enterHome();
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  HOME
+// ═══════════════════════════════════════════════════════
+async function enterHome() {
+  if (!homeExams) {
+    setRoot(`<div class="state-center"><div class="spinner"></div><p>Loading exams…</p></div>`);
+    try {
+      const res = await fetch('exams.json');
+      if (!res.ok) throw new Error('exams.json not found — run: node generate-manifest.js');
+      homeExams = await res.json();
+    } catch (e) {
+      setRoot(`<div class="state-center">
+        <p style="color:var(--red)">⚠ ${esc(e.message)}</p>
+        <p style="font-size:.82rem;max-width:400px;text-align:center">
+          Run <code style="color:var(--orange)">node generate-manifest.js</code> in the quiz folder to generate the exam list.
+        </p>
+      </div>`);
+      return;
+    }
+  }
+  renderHome();
+}
+
+function renderHome() {
+  const cards = homeExams.map(exam => `
+    <div class="exam-card" style="--card-color:${esc(exam.color)}"
+         onclick="goToQuiz('${esc(exam.file)}')">
+      <div class="card-top">
+        <div class="card-icon">${exam.icon}</div>
+        ${exam.code ? `<div class="card-badge">${esc(exam.code)}</div>` : ''}
+      </div>
+      <div class="card-body">
+        <div class="card-label">${esc(exam.label)}</div>
+        <div class="card-title">${esc(exam.title)}</div>
+      </div>
+      <div class="card-footer">
+        <div class="card-count"><strong>${exam.questions}</strong> questions</div>
+        <div class="card-arrow">Start →</div>
+      </div>
+    </div>
+  `).join('');
+
+  setRoot(`
+    <div id="home-view">
+      <div class="home-header">
+        <div class="home-logo">
+          <div class="home-logo-dot"></div>
+          AWS Practice Exams
+          <div class="home-logo-dot"></div>
+        </div>
+        <h1 class="home-title">Choose Your Exam</h1>
+        <p class="home-subtitle">${homeExams.length} exam${homeExams.length !== 1 ? 's' : ''} available — click to start practicing</p>
+      </div>
+      <div class="exam-grid">${cards}</div>
+    </div>
+  `);
+}
+
+function goToQuiz(file) {
+  location.hash = '#quiz=' + encodeURIComponent(file);
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════════════════════════
+async function enterQuiz(file) {
+  // Find exam metadata from home list
+  const exam = (homeExams || []).find(e => e.file === file) || { title: file, color: '#ff9900', icon: '☁️' };
+
+  setRoot(`<div class="state-center"><div class="spinner"></div><p>Loading ${esc(exam.title || file)}…</p></div>`);
+
+  try {
+    const res = await fetch(file);
+    if (!res.ok) throw new Error(`Could not load ${file} (HTTP ${res.status})`);
+    const text = await res.text();
+    const questions = parseMarkdown(text);
+    if (!questions.length) throw new Error('No questions found in this file');
+
+    quizState = { exam, questions, current: 0, revealed: false, results: {} };
+    document.documentElement.style.setProperty('--quiz-color', exam.color || '#ff9900');
+    renderQuiz();
+  } catch (e) {
+    setRoot(`<div class="state-center">
+      <p style="color:var(--red)">⚠ ${esc(e.message)}</p>
+      <button class="btn-back" onclick="goHome()" style="margin-top:8px">← Back to exams</button>
+    </div>`);
+  }
+}
+
+function renderQuiz() {
+  const { exam, questions, current, revealed, results } = quizState;
+  const q   = questions[current];
+  const pct = Math.round(((current + 1) / questions.length) * 100);
+  const correct = Object.values(results).filter(v => v === 'correct').length;
+  const wrong   = Object.values(results).filter(v => v === 'wrong').length;
+
+  setRoot(`
+    <div id="quiz-view">
+      <div class="quiz-topbar">
+        <button class="btn-back" onclick="goHome()">← Exams</button>
+        <span class="quiz-title">${esc(exam.title || '')} ${exam.code ? '· '+esc(exam.code) : ''}</span>
+        <div class="quiz-counter">Q <span>${current + 1}</span> / <span>${questions.length}</span></div>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-label"><span>Progress</span><span>${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+      </div>
+
+      <div class="score-bar">
+        <div class="score-item"><div class="dot dot-green"></div> Correct: <strong>${correct}</strong></div>
+        <div class="score-item"><div class="dot dot-red"></div> Wrong: <strong>${wrong}</strong></div>
+        <div class="jump-wrap">
+          <input class="jump-input" id="jumpInput" type="number" min="1" max="${questions.length}" placeholder="#" />
+          <button class="btn-jump" onclick="jumpTo()">Go</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="question-badge">Question #${q.number}</div>
+        <div class="question-text">${esc(q.question)}</div>
+
+        <div class="options">
+          ${q.options.map(opt => `
+            <button class="option${revealed ? (isCorrect(opt.letter, q.answer) ? ' correct' : ' wrong') : ''}"
+                    ${revealed ? 'disabled' : ''}
+                    onclick="selectOption('${opt.letter}')">
+              <span class="option-letter">${opt.letter}</span>
+              <span>${esc(opt.text)}</span>
+            </button>
+          `).join('')}
+        </div>
+
+        <div class="answer-reveal${revealed ? ' show' : ''}">
+          ✅ Correct answer: <strong>${q.answer}</strong>
+          ${q.answer.length > 1 ? `<span style="color:var(--muted);font-size:.8rem">(choose ${q.answer.length})</span>` : ''}
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-nav" onclick="navigate(-1)" ${current === 0 ? 'disabled' : ''}>◄ Previous</button>
+        <button class="btn btn-reveal" onclick="revealAnswer()" ${revealed ? 'disabled' : ''}>
+          ${revealed ? '✓ Answer Shown' : '👁 Show Answer'}
+        </button>
+        <button class="btn btn-nav" onclick="navigate(1)" ${current === questions.length - 1 ? 'disabled' : ''}>Next ►</button>
+        ${q.link ? `<a class="btn-link" href="${esc(q.link)}" target="_blank" rel="noopener">ExamTopics ↗</a>` : ''}
+      </div>
+    </div>
+  `);
+
+  const ji = document.getElementById('jumpInput');
+  if (ji) ji.addEventListener('keydown', e => { if (e.key === 'Enter') jumpTo(); });
+}
+
+// ═══════════════════════════════════════════════════════
+//  QUIZ ACTIONS
+// ═══════════════════════════════════════════════════════
+function goHome() { location.hash = ''; }
+
+function revealAnswer() {
+  quizState.revealed = true;
+  renderQuiz();
+}
+
+function selectOption(letter) {
+  if (quizState.revealed) return;
+  quizState.results[quizState.current] = isCorrect(letter, quizState.questions[quizState.current].answer) ? 'correct' : 'wrong';
+  quizState.revealed = true;
+  renderQuiz();
+}
+
+function navigate(dir) {
+  const { questions } = quizState;
+  quizState.current  = Math.max(0, Math.min(questions.length - 1, quizState.current + dir));
+  quizState.revealed = false;
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function jumpTo() {
+  const val = parseInt(document.getElementById('jumpInput').value);
+  if (isNaN(val) || val < 1 || val > quizState.questions.length) return;
+  quizState.current  = val - 1;
+  quizState.revealed = false;
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════
+//  KEYBOARD SHORTCUTS
+// ═══════════════════════════════════════════════════════
+document.addEventListener('keydown', e => {
+  if (!quizState || !location.hash.startsWith('#quiz=')) return;
+  if (e.target.tagName === 'INPUT') return;
+  if (e.key === 'ArrowRight') navigate(1);
+  if (e.key === 'ArrowLeft')  navigate(-1);
+  if (e.key === ' ')          { e.preventDefault(); revealAnswer(); }
+  const num = parseInt(e.key);
+  if (num >= 1 && num <= (quizState.questions[quizState.current]?.options.length ?? 0)) {
+    selectOption(quizState.questions[quizState.current].options[num - 1].letter);
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+route();
+</script>
+</body>
+</html>

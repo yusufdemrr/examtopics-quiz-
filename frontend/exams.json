@@ -1,0 +1,42 @@
+[
+  {
+    "file": "aws_mls.md",
+    "title": "AWS Certified Machine Learning - Specialty",
+    "code": "",
+    "questions": 369,
+    "category": "ml",
+    "icon": "🤖",
+    "color": "#58a6ff",
+    "label": "Machine Learning"
+  },
+  {
+    "file": "aws_mla.md",
+    "title": "AWS Certified Machine Learning Engineer - Associate",
+    "code": "MLA-C01",
+    "questions": 196,
+    "category": "ml",
+    "icon": "🤖",
+    "color": "#58a6ff",
+    "label": "Machine Learning"
+  },
+  {
+    "file": "aws_scs_c03.md",
+    "title": "AWS Certified Security - Specialty",
+    "code": "SCS-C03",
+    "questions": 9,
+    "category": "security",
+    "icon": "🔒",
+    "color": "#f0883e",
+    "label": "Security"
+  },
+  {
+    "file": "aws_security.md",
+    "title": "AWS Certified Security - Specialty",
+    "code": "SCS-C02",
+    "questions": 307,
+    "category": "security",
+    "icon": "🔒",
+    "color": "#f0883e",
+    "label": "Security"
+  }
+]
