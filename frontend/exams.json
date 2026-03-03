@@ -20,6 +20,26 @@
     "label": "Machine Learning"
   },
   {
+    "file": "aws_scs_all.md",
+    "title": "AWS Certified Security - Specialty",
+    "code": "SCS-C02",
+    "questions": 719,
+    "category": "security",
+    "icon": "🔒",
+    "color": "#f0883e",
+    "label": "Security"
+  },
+  {
+    "file": "aws_scs_c02.md",
+    "title": "AWS Certified Security - Specialty",
+    "code": "SCS-C02",
+    "questions": 307,
+    "category": "security",
+    "icon": "🔒",
+    "color": "#f0883e",
+    "label": "Security"
+  },
+  {
     "file": "aws_scs_c03.md",
     "title": "AWS Certified Security - Specialty",
     "code": "SCS-C03",
@@ -30,13 +50,33 @@
     "label": "Security"
   },
   {
-    "file": "aws_security.md",
-    "title": "AWS Certified Security - Specialty",
-    "code": "SCS-C02",
-    "questions": 307,
-    "category": "security",
-    "icon": "🔒",
-    "color": "#f0883e",
-    "label": "Security"
+    "file": "aws_saa_c02.md",
+    "title": "AWS Certified Solutions Architect - Associate",
+    "code": "SAA-C02",
+    "questions": 800,
+    "category": "architect",
+    "icon": "🏗️",
+    "color": "#a371f7",
+    "label": "Solutions Architect"
+  },
+  {
+    "file": "aws_saa_c03.md",
+    "title": "AWS Certified Solutions Architect - Associate",
+    "code": "SAA-C03",
+    "questions": 1019,
+    "category": "architect",
+    "icon": "🏗️",
+    "color": "#a371f7",
+    "label": "Solutions Architect"
+  },
+  {
+    "file": "aws_sap_c02.md",
+    "title": "AWS Certified Solutions Architect - Professional",
+    "code": "SAP-C02",
+    "questions": 529,
+    "category": "architect",
+    "icon": "🏗️",
+    "color": "#a371f7",
+    "label": "Solutions Architect"
   }
 ]

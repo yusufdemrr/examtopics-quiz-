@@ -1,21 +1,26 @@
 #!/usr/bin/env node
 /**
  * generate-manifest.js
- * - Scans root directory for .md exam files
+ * - Scans exams/ directory for .md exam files
  * - Copies them into frontend/
  * - Writes frontend/exams.json
  *
  * Usage:             node generate-manifest.js
  * Netlify build cmd: node generate-manifest.js
+ *
+ * To add a new exam:
+ *   1. go run ./cmd/main.go -p amazon -s "xxx-c01" -no-cache -o exams/aws_xxx_c01.md
+ *   2. node generate-manifest.js
  */
 
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT     = __dirname;               // examtopics-downloader/
+const ROOT     = __dirname;
+const EXAMS    = path.join(ROOT, 'exams');
 const FRONTEND = path.join(ROOT, 'frontend');
-const SKIP     = new Set(['README.md', 'readme.md', 'CHANGELOG.md']);
 
+if (!fs.existsSync(EXAMS))    fs.mkdirSync(EXAMS,    { recursive: true });
 if (!fs.existsSync(FRONTEND)) fs.mkdirSync(FRONTEND, { recursive: true });
 
 // ── Category detection ────────────────────────────────────────────────
@@ -60,21 +65,21 @@ function parseFile(content, filename) {
 }
 
 // ── Main ─────────────────────────────────────────────────────────────
-const mdFiles = fs.readdirSync(ROOT).filter(f => f.endsWith('.md') && !SKIP.has(f));
+const mdFiles = fs.readdirSync(EXAMS).filter(f => f.endsWith('.md'));
 
 if (mdFiles.length === 0) {
-  console.error('No .md files found in', ROOT);
+  console.error('No .md files found in exams/');
   process.exit(1);
 }
 
 const exams = mdFiles
   .map(f => {
     try {
-      const content = fs.readFileSync(path.join(ROOT, f), 'utf8');
+      const content = fs.readFileSync(path.join(EXAMS, f), 'utf8');
       const exam    = parseFile(content, f);
       if (!exam) return null;
       // copy md file into frontend/ so the site can fetch it
-      fs.copyFileSync(path.join(ROOT, f), path.join(FRONTEND, f));
+      fs.copyFileSync(path.join(EXAMS, f), path.join(FRONTEND, f));
       return exam;
     } catch (e) {
       console.warn(`  ⚠ Skipping ${f}: ${e.message}`);
